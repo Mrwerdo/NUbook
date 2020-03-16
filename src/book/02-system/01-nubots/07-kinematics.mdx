@@ -11,7 +11,8 @@ Kinematics specifies the relationship between the position of two points on a ch
 # Forward Kinematics
 
 ## Leg
-*image of leg*
+
+_image of leg_
 
 [Forward Kinematics](https://github.com/NUbots/NUbots/blob/master/shared/utility/motion/ForwardKinematics.h) begins with the identity matrix
 
@@ -23,17 +24,17 @@ $$
 0 & 0 & 0 & 1 \end{bmatrix}
 $$
 
-Which we can think of as the transformation matrix from the torso to the torso. 
+Which we can think of as the transformation matrix from the torso to the torso.
 
 We move this matrix to the hip, using the hip offset from the torso config value in the [KinematicsConfiguration.yaml](https://github.com/NUbots/NUbots/blob/10dcb7a3d918b663a8db23f8fe966fc89ccbf413/module/motion/KinematicsConfiguration/data/config/KinematicsConfiguration.yaml#L3) file.
 
 The matrix is then rotated by $/pi/2$ around the y-axis to face down the leg. We then rotate again using the current servo angles for the hip yaw, pitch and roll. The transform is then translated down the length of the upper leg and then rotated about the knee pitch, which is the only degree of freedom in the knee.
 
-The transform is translated down the lower leg to the ankle. The ankle has two degrees of freedom, pitch and roll. The transform is rotated by pitch first and then roll. 
+The transform is translated down the lower leg to the ankle. The ankle has two degrees of freedom, pitch and roll. The transform is rotated by pitch first and then roll.
 
 Since the transform was rotated to face down the leg, we now rotate the y-axis back up by $-\pi/2$ to face towards the toe. The transform is translated down to the bottom of the foot.
 
-This final matrix is the transform from the torso to the foot. Any transform on the chain can be retrieved by forward kinematics, however to get the correct torso to foot transform, the `ANKLE_ROLL` servo ID must be specified when calling `calculateLegJointPosition`. 
+This final matrix is the transform from the torso to the foot. Any transform on the chain can be retrieved by forward kinematics, however to get the correct torso to foot transform, the `ANKLE_ROLL` servo ID must be specified when calling `calculateLegJointPosition`.
 
 ## Arm
 
