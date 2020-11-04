@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { Link } from 'gatsby'
 
 import style from './sidebar.module.css'
+import SectionPicker from './section-picker'
 
 const getLinkProps = ({ isCurrent }) => {
   return {
@@ -28,18 +29,7 @@ const Sidebar = ({ menu, currentSection }) => {
   return (
     <nav ref={sidebarEl}>
       <div className='mb-8'>
-        {menu.map(section => {
-          const className = `${style.sectionLink} ${
-            section.title === currentSection.title
-              ? `${style.sectionLinkActive}`
-              : ''
-          }`
-          return (
-            <Link to={section.slug} key={section.slug} className={className}>
-              {section.title}
-            </Link>
-          )
-        })}
+        <SectionPicker sections={menu} currentSection={currentSection} />
       </div>
 
       {currentSection.chapters.map(chapter => {
