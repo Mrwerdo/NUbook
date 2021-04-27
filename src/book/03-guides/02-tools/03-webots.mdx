@@ -6,7 +6,7 @@ description: Setup instructions for Webots.
 slug: /guides/tools/webots-setup
 ---
 
-Webots is a physics environment created by Cyberbotics. This guide details how to set up Webots. It gives instructions on setting up Ubuntu (WSL) inside Windows for Windows users, and the rest of the guide is aimed at Ubuntu users (including Windows WSL Ubuntu users).
+[Webots](https://cyberbotics.com/) is a physics environment created by Cyberbotics. This guide details how to set up Webots. It gives instructions on setting up Ubuntu (WSL) inside Windows for Windows users, and the rest of the guide is aimed at Ubuntu users (including Windows WSL Ubuntu users).
 
 ## Prerequisites
 
@@ -16,24 +16,17 @@ Webots is a physics environment created by Cyberbotics. This guide details how t
 
 1. Follow the instructions for setting up Ubuntu in WSL on the [Getting Started NUbook page under the Windows tab in the Docker section](/guides/main/getting-started#docker).
 
-2. In Windows (not WSL Ubuntu) Download and install [VcXsrv Windows X Server](https://sourceforge.net/projects/vcxsrv/files/latest/download). Use all the default install settings.
+2. Since Webots uses a GUI, we will need to set up a way to launch and display the program. Use [these instructions](https://medium.com/@chuckdries/installing-gitkraken-in-wsl-2-15bf6459f823) which is for a similar scenario, but with GitKraken instead of Webots. **Take note of the following changes**:
 
-3. In Windows (not WSL Ubuntu) Run XLaunch with the following settings
+   - You can ignore installing and launching GitKraken. Instead, we will use the Webots instructions later in this guide to install and launch Webots.
 
-   1. ![First XLaunch settings window](images/WindowsInstall1)
-      On the first screen, select multiple windows and set the display number to -1.
+   - When running XLaunch configuration, **uncheck 'Native opengl'** on the third window.
 
-   2. ![Second XLaunch settings window](images/WindowsInstall2)
-      On the second screen, select 'start no client'.
+   - To prevent having to set the DISPLAY environment variable every time, run the following command in Ubuntu:
 
-   3. ![Third XLaunch settings window](images/WindowsInstall3)
-      On the third screen, check 'clipboard', 'primary selection' and 'disable'. Uncheck 'native opengl'.
-
-4. Launch Ubuntu and run
-
-   ```sh
-   sudo apt install libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 libxcb-xfixes0 libxcb-xinerama0 libxcb-xkb1 libxkbcommon-x11-0 libxkbcommon0
-   ```
+     ```sh
+     echo 'export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '\''{print $2; exit;}'\''):0.0' >> ~/.bashrc
+     ```
 
    <Alert type='info'>
 
@@ -41,9 +34,28 @@ Webots is a physics environment created by Cyberbotics. This guide details how t
 
    </Alert>
 
+<<<<<<< HEAD
 5. Back in Windows, open Powershell and run `ipconfig`. Look for an entry that does **not** contain `VEthernet` in the name and contains an IPv4 address. Note down the IPv4 address. We will refer to it as `<IPv4 Address>`.
 
 6. In Ubuntu, run `export DISPLAY=<IPv4 Address>:0.0`, using the IPv4 address from the previous step.
+
+Follow the rest of the steps on this page within Ubuntu.
+
+</details>
+
+
+3. In Ubuntu run
+
+   ```sh
+   sudo apt-get update
+   sudo apt-get install libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 libxcb-xfixes0 libxcb-xinerama0 libxcb-xkb1 libxkbcommon-x11-0 libxkbcommon0
+   ```
+
+<Alert type='info'>
+
+You will need XLaunch running every time you want to run Webots.
+
+</Alert>
 
 Follow the rest of the steps on this page within Ubuntu.
 
@@ -76,57 +88,72 @@ Follow the rest of the steps on this page within Ubuntu.
 
 </details>
 
-To ensure you have all the required packages, run
+Install libraries for cmake, protobuf, eigen, and yaml-cpp:
 
 ```sh
-sudo apt-get install cmake
+sudo apt-get update
+sudo apt-get install cmake-curses-gui libprotobuf-dev protobuf-compiler libeigen3-dev libyaml-cpp-dev
 ```
 
 ## Install Webots
 
-To install Webots, use the instructions on the [Webots GitHub repository](https://github.com/cyberbotics/webots/wiki/Linux-installation). Follow these instructions inside Ubuntu (WSL) if you are a Windows user. See the previous section on how to set this up. The optional dependencies are not required.
+To install Webots, use the instructions on the [Webots GitHub repository](https://github.com/cyberbotics/webots/wiki/Linux-installation). After running the `git clone` command in the guide, run `git checkout develop`. Follow these instructions inside Ubuntu (WSL) if you are a Windows user. See the previous section on how to set this up. The optional dependencies are not required. Note that you must clone the Webots directory into your home folder. To move to your home folder, run `cd ~`.
 
 ## Get and Build the NUbots Environment
 
-1. Open a terminal. Clone the [NUbots/Webots](https://github.com/NUbots/Webots/) repository and move into it by running
+1. Open a terminal. Clone the [NUbots/NUWebots](https://github.com/NUbots/NUWebots/) repository and move into it by running
 
    ```sh
-   git clone https://github.com/NUbots/Webots
-   cd Webots
+   git clone https://github.com/NUbots/NUWebots
+   cd NUWebots
    ```
 
 2. Compile the controllers with cmake
 
    1. Make a build folder and move into it
 
-   ```sh
-   mkdir build && cd build
-   ```
+      ```sh
+      mkdir build && cd build
+      ```
 
    2. Configure and generate the build files
 
-   ```sh
-   cmake ..
-   ```
+      ```sh
+      cmake ..
+      ```
 
    3. Compile the code
 
-   ```sh
-   make
-   ```
+      ```sh
+      make -j$(nproc)
+      ```
 
 ## Running Webots
 
-1. Launch Webots by running
+1. Navigate to the Webots folder
+
+   ```sh
+   cd ~/webots
+   ```
+
+2. Launch Webots by running
 
    ```sh
    ./webots
    ```
 
-2. Open the NUbots world file inside Webots.
+3. Open the NUbots world file inside Webots.
 
    1. Click on `File->Open World...`.
 
-   2. In the pop-up, navigate to the [NUbots/Webots](https://github.com/NUbots/Webots/) repository on your computer and open the `worlds/kid.wbt` world file.
+   2. In the pop-up, navigate to the [NUbots/NUWebots](https://github.com/NUbots/NUWebots/) repository on your computer and open the `worlds/kid.wbt` world file.
 
-Where <name of controller> is the name you want to use for the new controller. A folder and files will be created with this name, so they must be valid file names (don't use spaces in your controller name).
+## Creating a New Controller
+
+From the root of the NUWebots repository run
+
+```sh
+python3 ./scripts/create_controller.py <name of controller>
+```
+
+Where `<name of controller>` is the name you want to use for the new controller. A folder and files will be created with this name, so they must be valid file names (don't use spaces in your controller name).
