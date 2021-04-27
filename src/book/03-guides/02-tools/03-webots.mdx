@@ -34,14 +34,13 @@ slug: /guides/tools/webots-setup
 
    </Alert>
 
-5. Back in Windows, open Powershell and run `ipconfig`. Look for an entry that does **not** contain `VEthernet` in the name and contains an IPv4 address. Note down the IPv4 address. We will refer to it as `<IPv4 Address>`.
+3. Back in Windows, open Powershell and run `ipconfig`. Look for an entry that does **not** contain `VEthernet` in the name and contains an IPv4 address. Note down the IPv4 address. We will refer to it as `<IPv4 Address>`.
 
-6. In Ubuntu, run `export DISPLAY=<IPv4 Address>:0.0`, using the IPv4 address from the previous step.
+4. In Ubuntu, run `export DISPLAY=<IPv4 Address>:0.0`, using the IPv4 address from the previous step.
 
 Follow the rest of the steps on this page within Ubuntu.
 
 </details>
-
 
 3. In Ubuntu run
 
@@ -67,10 +66,10 @@ Follow the rest of the steps on this page within Ubuntu.
 1. Run `pacman -S --needed git lsb-release cmake swig glu glib2 freeimage freetype2 libxml2 libzip boost-libs gd libgcrypt libzip readline pbzip2 pciutils wget zip unzip jdk-openjdk libusb` to obtain the required dependencies.
 
 2. After the clone step below, alter the `src/webots/Makefile`
-	```diff
-	-LIBS              += $(WEBOTS_DEPENDENCY_PATH)/lua-5.2.3/src/liblua.a $(LIB_WREN) -Wl,-rpath $(WEBOTS_LIB_PATH) -L$(WEBOTS_LIB_PATH) -lQt5Core -lQt5Network -lQt5Gui -lQt5OpenGL -lQt5WebSockets -lQt5Widgets -lQt5PrintSupport -lQt5WebEngine -lQt5WebEngineCore -lQt5WebEngineWidgets -lQt5Multimedia -lQt5MultimediaWidgets -lQt5Sql -lQt5Sensors -lQt5WebChannel -lQt5Xml -lopenal -lGL -lusb -lGLU -ldl -lOIS -lcrypto -lpico -lfreetype -lassimp -lrt
-	+LIBS              += $(WEBOTS_DEPENDENCY_PATH)/lua-5.2.3/src/liblua.a $(LIB_WREN) -Wl,-rpath $(WEBOTS_LIB_PATH) -L$(WEBOTS_LIB_PATH) -lQt5Core -lQt5Network -lQt5Gui -lQt5OpenGL -lQt5WebSockets -lQt5Widgets -lQt5PrintSupport -lQt5WebEngine -lQt5WebEngineCore -lQt5WebEngineWidgets -lQt5Multimedia -lQt5MultimediaWidgets -lQt5Sql -lQt5Sensors -lQt5WebChannel -lQt5Xml -lopenal -lGL $(pkg-config --libs libusb-1.0) -lGLU -ldl -lOIS -lcrypto -lpico -lfreetype -lassimp -lrt
-	```
+   ```diff
+   -LIBS              += $(WEBOTS_DEPENDENCY_PATH)/lua-5.2.3/src/liblua.a $(LIB_WREN) -Wl,-rpath $(WEBOTS_LIB_PATH) -L$(WEBOTS_LIB_PATH) -lQt5Core -lQt5Network -lQt5Gui -lQt5OpenGL -lQt5WebSockets -lQt5Widgets -lQt5PrintSupport -lQt5WebEngine -lQt5WebEngineCore -lQt5WebEngineWidgets -lQt5Multimedia -lQt5MultimediaWidgets -lQt5Sql -lQt5Sensors -lQt5WebChannel -lQt5Xml -lopenal -lGL -lusb -lGLU -ldl -lOIS -lcrypto -lpico -lfreetype -lassimp -lrt
+   +LIBS              += $(WEBOTS_DEPENDENCY_PATH)/lua-5.2.3/src/liblua.a $(LIB_WREN) -Wl,-rpath $(WEBOTS_LIB_PATH) -L$(WEBOTS_LIB_PATH) -lQt5Core -lQt5Network -lQt5Gui -lQt5OpenGL -lQt5WebSockets -lQt5Widgets -lQt5PrintSupport -lQt5WebEngine -lQt5WebEngineCore -lQt5WebEngineWidgets -lQt5Multimedia -lQt5MultimediaWidgets -lQt5Sql -lQt5Sensors -lQt5WebChannel -lQt5Xml -lopenal -lGL $(pkg-config --libs libusb-1.0) -lGLU -ldl -lOIS -lcrypto -lpico -lfreetype -lassimp -lrt
+   ```
 
 </details>
 
