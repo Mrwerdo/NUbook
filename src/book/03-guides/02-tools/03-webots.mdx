@@ -34,7 +34,6 @@ slug: /guides/tools/webots-setup
 
    </Alert>
 
-<<<<<<< HEAD
 5. Back in Windows, open Powershell and run `ipconfig`. Look for an entry that does **not** contain `VEthernet` in the name and contains an IPv4 address. Note down the IPv4 address. We will refer to it as `<IPv4 Address>`.
 
 6. In Ubuntu, run `export DISPLAY=<IPv4 Address>:0.0`, using the IPv4 address from the previous step.
@@ -67,23 +66,10 @@ Follow the rest of the steps on this page within Ubuntu.
 
 1. Run `pacman -S --needed git lsb-release cmake swig glu glib2 freeimage freetype2 libxml2 libzip boost-libs gd libgcrypt libzip readline pbzip2 pciutils wget zip unzip jdk-openjdk libusb` to obtain the required dependencies.
 
-2. After the clone step below, save 
+2. After the clone step below, alter the `src/webots/Makefile`
 	```diff
-	--- a/src/webots/Makefile
-	+++ b/src/webots/Makefile
-	@@ -123,7 +123,7 @@
-	 CFLAGS             = -fPIC
-	 CXXFLAGS           = -std=c++11
-	 MOC                = $(WEBOTS_PATH)/bin/qt/moc
 	-LIBS              += $(WEBOTS_DEPENDENCY_PATH)/lua-5.2.3/src/liblua.a $(LIB_WREN) -Wl,-rpath $(WEBOTS_LIB_PATH) -L$(WEBOTS_LIB_PATH) -lQt5Core -lQt5Network -lQt5Gui -lQt5OpenGL -lQt5WebSockets -lQt5Widgets -lQt5PrintSupport -lQt5WebEngine -lQt5WebEngineCore -lQt5WebEngineWidgets -lQt5Multimedia -lQt5MultimediaWidgets -lQt5Sql -lQt5Sensors -lQt5WebChannel -lQt5Xml -lopenal -lGL -lusb -lGLU -ldl -lOIS -lcrypto -lpico -lfreetype -lassimp -lrt
 	+LIBS              += $(WEBOTS_DEPENDENCY_PATH)/lua-5.2.3/src/liblua.a $(LIB_WREN) -Wl,-rpath $(WEBOTS_LIB_PATH) -L$(WEBOTS_LIB_PATH) -lQt5Core -lQt5Network -lQt5Gui -lQt5OpenGL -lQt5WebSockets -lQt5Widgets -lQt5PrintSupport -lQt5WebEngine -lQt5WebEngineCore -lQt5WebEngineWidgets -lQt5Multimedia -lQt5MultimediaWidgets -lQt5Sql -lQt5Sensors -lQt5WebChannel -lQt5Xml -lopenal -lGL $(pkg-config --libs libusb-1.0) -lGLU -ldl -lOIS -lcrypto -lpico -lfreetype -lassimp -lrt
-	 LD_FLAGS           = -rdynamic
-	 EXTRA_CMD          = cp launcher/webots-linux.sh $(WEBOTS_PATH)/webots && chmod 755 $(WEBOTS_PATH)/webots
-	 FILES_TO_REMOVE    = $(WEBOTS_PATH)/webots
-	```
-	as `usb.patch` in the folder that you cloned Webots into then run
-	```sh
-	git apply usb.patch
 	```
 
 </details>
